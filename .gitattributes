@@ -1,3 +1,9 @@
+# Крупные ассеты русификации — через git-lfs.
+# Ролики ~406 МБ, VOX-архивы ~228 МБ; в обычных git-объектах им не место.
 *.ogv filter=lfs diff=lfs merge=lfs -text
 *.LAB filter=lfs diff=lfs merge=lfs -text
 *.lab filter=lfs diff=lfs merge=lfs -text
+
+# Скрипты и текст — обычным git'ом, с нормализацией переводов строк.
+*.sh text eol=lf
+*.md text
