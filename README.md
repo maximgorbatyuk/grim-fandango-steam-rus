@@ -1,6 +1,6 @@
 # Русификатор игры Grim Fandango Remastered (Steam, MacOs)
 
-![Grim Fandango Remastered](img/grim-fandango-steam-rus.png)
+![Grim Fandango Remastered](/img/capsule_616x353.jpg)
 
 ## Веб установка (рекомендуем)
 
