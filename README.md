@@ -1,28 +1,34 @@
-# grim-fandango-steam-rus
+# Русификатор игры Grim Fandango Remastered (Steam, MacOs)
 
-Русификация Grim Fandango Remastered (Steam) для macOS на Apple Silicon.
+![Grim Fandango Remastered](img/grim-fandango-steam-rus.png)
 
-## Установка
-
-Два скрипта. Оба ставят одно и то же, отличается только откуда берутся файлы.
-
-### install.sh — скачать и поставить
-
-Если репозитория на диске нет. Клонирует его во временную папку, ставит
-русификацию и предлагает удалить скачанное.
+## Веб установка (рекомендуем)
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/maximgorbatyuk/grim-fandango-steam-rus/main/install.sh | bash
 ```
 
-Качается ~640 МБ. Нужен `git-lfs` — без него скачаются заглушки вместо
-роликов, и скрипт об этом скажет:
+Скрипт будет скачивать файлы русификации с этого репозитория.
+
+### Локальная установка
+
+Можно склонировать этот репозиторий (или [скачать как ZIP](https://github.com/maximgorbatyuk/grim-fandango-steam-rus/archive/refs/heads/main.zip)) и затем вызвать `install.sh` из скачанной папки.
+
+```bash
+./local-install.sh
+```
+
+## Зависимости
+
+Нужен `git-lfs` — без него скачаются заглушки вместо роликов, и скрипт об этом скажет:
 
 ```bash
 brew install git-lfs && git lfs install
 ```
 
-Ключи:
+## Параметры скрипта
+
+Для локального скрипта `./local-install.sh` есть разные варианты исполнения:
 
 | Ключ          | Что делает                                        |
 |---------------|---------------------------------------------------|
@@ -32,29 +38,14 @@ brew install git-lfs && git lfs install
 | `--ref ИМЯ`   | ветка или тег репозитория (по умолчанию `main`)   |
 | `--repo URL`  | другой репозиторий                                |
 
-Временная папка удаляется только с вашего согласия. Если установка упала —
-остаётся на месте, чтобы можно было разобраться.
-
-### local-install.sh — поставить из клона
-
-Если репозиторий уже склонирован. Берёт файлы из каталогов рядом с собой,
-ничего не качает.
-
-```bash
-./local-install.sh
-```
-
-Скрипт сам найдёт игру в стандартной библиотеке Steam. Если она в другом месте:
-
-```bash
-./local-install.sh "/путь/к/GrimFandango.app"
-```
-
-Посмотреть план, ничего не меняя:
+Пример:
 
 ```bash
 ./local-install.sh --dry-run
 ```
+
+Временная папка удаляется только с вашего согласия. Если установка упала —
+остаётся на месте, чтобы можно было разобраться.
 
 ## Что внутри
 
@@ -62,12 +53,11 @@ brew install git-lfs && git lfs install
 |--------------|-------------------------------|-----------------------------------|
 | `rus-movies` | `Contents/Resources/MoviesHD` | заставки с русскими надписями     |
 | `sound`      | `Contents/Resources`          | VOX-архивы с переведённым текстом |
-| `fonts`      | `Contents/Resources/FontsHD`  | шрифты с кириллицей (опционально) |
 
-Перевод — [ENPY Studio](https://www.playground.ru/grim_fandango/file/rusifikator_grim_fandango_remastered_ot_enpy-937706).
+Перевод — [ENPY Studio](https://www.playground.ru/grim_fandango/file/rusifikator_grim_fandango_remastered_ot_enpy-937706), файлы взяты с [форума Steam](https://steamcommunity.com/sharedfiles/filedetails/?id=2135958703).
 Официальной Mac-сборки у русификатора нет, файлы извлечены из Windows-инсталлятора.
 
-## Почему нужен скрипт, а не простое копирование
+## Что делает скрипт (Скучная часть)
 
 Все файлы игры лежат внутри подписанного `.app`. В `Contents/CodeResources`
 хранится печать — хеш каждого файла бандла. Подменяете ролик или VOX-архив,
@@ -77,8 +67,7 @@ brew install git-lfs && git lfs install
 spctl: a sealed resource is missing or invalid
 ```
 
-На Apple Silicon это не предупреждение, а приговор: ядро убивает процесс при
-запуске (`killed`), Steam показывает «файлы могут быть повреждены».
+На чипе Apple Silicon ядро убивает процесс при запуске (`killed`), и Steam показывает «файлы могут быть повреждены».
 
 Скрипт после копирования пересобирает печать по текущему содержимому:
 
@@ -128,3 +117,7 @@ xattr -cr "$APP" && codesign --force --deep --sign - "$APP"
 `~/Library/Application Support` — защищённой TCC зоне, доступ к которой выдан
 вашему терминалу, а не root. Под `sudo` процесс теряет разрешение и получает
 отказ даже с полными правами. Бандл игры и так принадлежит вам.
+
+## Лицензия
+
+Лицензия [MIT](LICENSE), скрипт написан Claude Opus 5.
